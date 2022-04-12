@@ -14,7 +14,21 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $dataCount=Category::where('status','active')->count();
+        $data=Category::where('status','active')->get();
+
+        if($dataCount>0){
+        return response()->json([
+            'status'=>'200',
+            'data'=> $data,
+            'message'=>'Data found'
+        ]);
+        }elseif($dataCount<1){
+        return response()->json([
+            'status'=>'404',
+            'message'=>'No data found'
+        ]);
+        }
     }
 
     /**
@@ -24,7 +38,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+      //
     }
 
     /**
@@ -35,7 +49,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Category::create([
+            'name'=>ucwords($request->heading),
+            'desc'=>ucfirst($request->detail),
+            'status'=>'active'
+        ]);
+
+        return  response()->json([
+            'status'=>'201',
+            'message'=>'Category created Sucessfully'
+        ]);
     }
 
     /**
@@ -44,9 +67,14 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        //
+        $data=Category::find($id);
+        return  response()->json([
+            'status'=>'200',
+            'data'=>$data,
+            'message'=>'Found data'
+        ]);
     }
 
     /**
@@ -55,9 +83,9 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit()
     {
-        //
+       //
     }
 
     /**
@@ -67,9 +95,16 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request,$id)
     {
-        //
+        $data=Category::find($id)->update([
+            'name' => $request->heading,
+            'desc' => $request->detail
+        ]);
+        return  response()->json([
+            'status'=>'204',
+            'message'=>'Record successfully updated.'
+        ]);
     }
 
     /**
@@ -78,8 +113,12 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        $data=Category::find($id)->delete();
+        return  response()->json([
+            'status'=>'204',
+            'message'=>'Category successfully deleted.'
+        ]);
     }
 }

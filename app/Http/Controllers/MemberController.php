@@ -35,7 +35,20 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $name=ucwords($request->firstname)." ".ucwords($request->lastname);
+        Member::create([
+            'name' => $name,
+            // 'gender' => $request->male,
+            'email' => $request->email,
+            'password' => $request->password,
+            'role' => 0,
+            'status' => "active",
+        ]);
+
+        return response()->json([
+            'status'=> 201,
+            'message'=> 'Registration successful.'
+            ]);
     }
 
     /**

@@ -17,8 +17,8 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->foreignID('memberID')->constrained('members','id');
             $table->foreignID('topicID')->constrained('topics','id');
-            $table->string('title');
             $table->string('body');
+            $table->string('image');
             $table->string('status');
             $table->timestamps();
         });

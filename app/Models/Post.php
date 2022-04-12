@@ -12,8 +12,8 @@ class Post extends Model
     protected $fillable=[
         'memberID',
         'topicID',
-        'title',
         'body',
+        'image',
         'status',
     ];
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Topic;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,7 +15,21 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $postCount=Post::where('status','active')->count();
+        $post=Post::where('status','active')->with('Topic')->orderBy('created_at','desc')->get();
+        if($postCount>0){
+            return response()->json([
+                'status'=> 200,
+                'data'=> $post,
+                'message'=>"Data found."
+            ]);
+        }
+        elseif($postCount<1){
+            return response()->json([
+                'status'=> 404,
+                'message'=>"No data found."
+            ]);
+        }
     }
 
     /**
@@ -22,9 +37,9 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+       //
     }
 
     /**
@@ -35,7 +50,25 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $id=Topic::create([
+            'categoryID' => $request->categoryID,
+            'name' => $request->heading,
+            'status'=>'active'
+        ])->id;
+
+        //NOTE... replace 1 with the darn memberID
+        Post::create([
+            'memberID' => 1,
+            'topicID' => $id,
+            'body' => $request->contents,
+            'status' => 'active'
+
+        ]);
+        return response()->json([
+                'status'=> 201,
+                'message'=> 'Post created successfully.'
+                ]);
     }
 
     /**
