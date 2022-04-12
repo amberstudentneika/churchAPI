@@ -95,4 +95,20 @@ class MemberController extends Controller
     {
         //
     }
+
+
+    /**
+     * Find the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Member  $member
+     * @return \Illuminate\Http\Response
+     */
+    public function login(Request $request)
+    {
+       $countMember=Member::where('email',$request->email)->count();
+        
+    
+    
+    }
 }

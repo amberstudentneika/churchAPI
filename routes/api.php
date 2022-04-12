@@ -30,3 +30,5 @@ Route::post('/post/store',[App\Http\Controllers\PostController::class,'store']);
 Route::get('/post/index',[App\Http\Controllers\PostController::class,'index']);
 //Register
 Route::post('/register',[App\Http\Controllers\MemberController::class,'store']);
+//Login
+Route::post('/login',[App\Http\Controllers\MemberController::class,'login']);
