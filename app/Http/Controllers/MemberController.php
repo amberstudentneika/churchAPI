@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Hash;
 
 class MemberController extends Controller
 {
@@ -82,7 +83,13 @@ class MemberController extends Controller
      */
     public function update(Request $request, Member $member)
     {
-        //
+        $data=Member::find($id)->update([
+            // '' => $request->,
+        ]);
+        return  response()->json([
+            'status'=>'204',
+            'message'=>'Record successfully updated.'
+        ]);
     }
 
     /**
@@ -106,9 +113,35 @@ class MemberController extends Controller
      */
     public function login(Request $request)
     {
-       $countMember=Member::where('email',$request->email)->count();
-        
-    
-    
+       $HashedPasswordCount=Member::where('email',$request->email)->count();
+        $email= $request->email;
+       $pass= $request->password;
+       if($HashedPasswordCount== 0){
+        return  response()->json([
+            'status'=> '404',
+            'message'=> 'Invalid login. Please try again.'
+             ]);
+       }
+       if($HashedPasswordCount!=0){
+           $HashedPassword=Member::where('email',$email)->get('password');
+           $role=Member::where('email',$email)->get('role');
+           $role=$role[0]['role'];
+           $HashedPassword=$HashedPassword[0]['password'];
+           $mID=Member::where('email',$email)->get('id');
+           $mID=$mID[0]['id']; 
+           if(Hash::check($pass, $HashedPassword))
+           {
+               return response()->json([
+                'status'=>'200',
+                'role'=>$role,
+                'memberID'=>$mID,
+                'message'=> 'Login Successful.'
+
+               ]);
+           }
+           
+       }
+       
     }
 }
+

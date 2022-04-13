@@ -50,7 +50,12 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-
+        if($request->photo==""){
+            $image = "no image";
+        }elseif($request->photo!=null){
+            $image = $request->photo;
+        }
+        // return $image;
         $id=Topic::create([
             'categoryID' => $request->categoryID,
             'name' => $request->heading,
@@ -62,6 +67,7 @@ class PostController extends Controller
             'memberID' => 1,
             'topicID' => $id,
             'body' => $request->contents,
+            'image' => $image,
             'status' => 'active'
 
         ]);
