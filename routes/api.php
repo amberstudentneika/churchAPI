@@ -27,6 +27,8 @@ Route::post('/category/update/{id}',[App\Http\Controllers\CategoryController::cl
 Route::post('/category/delete/{id}',[App\Http\Controllers\CategoryController::class,'destroy']);
 //Post Routes
 Route::post('/post/store',[App\Http\Controllers\PostController::class,'store']);
+Route::post('/post/show/{id}',[App\Http\Controllers\PostController::class,'show']);
+Route::post('/post/delete/{id}',[App\Http\Controllers\PostController::class,'destroy']);
 Route::get('/post/index',[App\Http\Controllers\PostController::class,'index']);
 //Register
 Route::post('/register',[App\Http\Controllers\MemberController::class,'store']);

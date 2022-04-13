@@ -16,7 +16,7 @@ class PostController extends Controller
     public function index()
     {
         $postCount=Post::where('status','active')->count();
-        $post=Post::where('status','active')->with('Topic')->orderBy('created_at','desc')->get();
+        $post=Post::where('status','active')->with('Topic','Member')->orderBy('created_at','desc')->get();
         if($postCount>0){
             return response()->json([
                 'status'=> 200,
@@ -83,9 +83,14 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($id)
     {
-        //
+        $data=Post::where('id',$id)->with('Topic')->get();
+        return  response()->json([
+            'status'=>'200',
+            'data'=>$data,
+            'message'=>'Found data'
+        ]);
     }
 
     /**
@@ -117,8 +122,14 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+        $data=Post::find($id)->update([
+            'status' => "inactive"
+        ]);
+        return  response()->json([
+            'status'=>'204',
+            'message'=>'Post successfully deleted.'
+        ]);
     }
 }
