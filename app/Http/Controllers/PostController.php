@@ -89,7 +89,7 @@ class PostController extends Controller
         return  response()->json([
             'status'=>'200',
             'data'=>$data,
-            'message'=>'Found data'
+            'message'=>'Found data' 
         ]);
     }
 
