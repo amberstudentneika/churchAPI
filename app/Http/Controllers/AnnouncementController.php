@@ -28,7 +28,7 @@ class AnnouncementController extends Controller
             'status'=>'404',
             'message'=>'No data found'
         ]);
-        }
+        }//
     }
 
     /**
