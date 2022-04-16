@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/post',[App\Http\Controllers\PostController::class,'create']);
 //Announcement Routes
 Route::post('/announcement/store',[App\Http\Controllers\AnnouncementController::class,'store']);
+Route::get('/announcement/index',[App\Http\Controllers\AnnouncementController::class,'index']);
 //Category Routes
 Route::post('/category/store',[App\Http\Controllers\CategoryController::class,'store']);
 Route::get('/category/index',[App\Http\Controllers\CategoryController::class,'index']);

@@ -13,6 +13,7 @@ class Announcement extends Model
         'memberID',
         'topic',
         'message',
+        'image',
         'status',
         // 'admin'
     ];

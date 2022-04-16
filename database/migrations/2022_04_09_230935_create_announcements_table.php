@@ -18,6 +18,7 @@ class CreateAnnouncementsTable extends Migration
             $table->foreignID('memberID')->constrained('members','id');
             $table->string('topic');
             $table->string('message');
+            $table->string('image');
             $table->string('status')->default('active');
             // $table->string('admin');
             $table->timestamps();

@@ -15,7 +15,7 @@ class AnnouncementController extends Controller
     public function index()
     {
         $dataCount=Announcement::where('status','active')->count();
-        $data=Announcement::where('status','active')->get();
+        $data=Announcement::where('status','active')->with('Member')->orderBy('created_at','desc')->get();
 //
         if($dataCount>0){
         return response()->json([
