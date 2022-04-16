@@ -16,7 +16,7 @@ class AnnouncementController extends Controller
     {
         $dataCount=Announcement::where('status','active')->count();
         $data=Announcement::where('status','active')->get();
-
+//
         if($dataCount>0){
         return response()->json([
             'status'=>'200',
