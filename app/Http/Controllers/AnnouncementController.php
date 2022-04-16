@@ -14,7 +14,21 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        //
+        $dataCount=Announcement::where('status','active')->count();
+        $data=Announcement::where('status','active')->get();
+
+        if($dataCount>0){
+        return response()->json([
+            'status'=>'200',
+            'data'=> $data,
+            'message'=>'Data found'
+        ]);
+        }elseif($dataCount<1){
+        return response()->json([
+            'status'=>'404',
+            'message'=>'No data found'
+        ]);
+        }
     }
 
     /**
@@ -35,7 +49,24 @@ class AnnouncementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->photo==""){
+            $image = "no image";
+        }elseif($request->photo!=null){
+            $image = $request->photo;
+        }
+        Announcement::create([
+            'memberID'=> $request->memberID,
+            'topic'=> $request->heading,
+            'message'=> $request->contents,
+            'image'=> $image,
+            // 'admin'=>'active',
+            'status'=>'active'
+        ]);
+
+        return  response()->json([
+            'status'=>'201',
+            'message'=>'Category created Sucessfully'
+        ]);
     }
 
     /**

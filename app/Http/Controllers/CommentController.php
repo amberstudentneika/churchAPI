@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -35,7 +36,21 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Comment::create([
+            'memberID' => $request->memberID,
+            'postID' => $request->postID,
+            'body' => $request->comment,
+            'status' => "active",
+        ]);
+        $total=Comment::where('postID',$request->postID)->count();
+                //likes count update
+            Post::where('id',$request->postID)->update([
+                'totalComments' => $total 
+            ]);
+        return  response()->json([
+            'status'=>'201',
+            'message'=>'Comment created Sucessfully'
+        ]);
     }
 
     /**

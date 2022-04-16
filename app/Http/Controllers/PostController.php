@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Comment;
 use App\Models\Topic;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -17,10 +19,12 @@ class PostController extends Controller
     {
         $postCount=Post::where('status','active')->count();
         $post=Post::where('status','active')->with('Topic','Member')->orderBy('created_at','desc')->get();
+        $comment= Comment::where('status','active')->with('Member')->get();
         if($postCount>0){
             return response()->json([
                 'status'=> 200,
                 'data'=> $post,
+                'commentData'=> $comment,
                 'message'=>"Data found."
             ]);
         }
@@ -86,9 +90,14 @@ class PostController extends Controller
     public function show($id)
     {
         $data=Post::where('id',$id)->with('Topic')->get();
+        $categoryID=$data[0]['topic']['categoryID'];
+        $categoryData=Category::find($categoryID);
+        $categoryRecords=Category::where('status','active')->get();
         return  response()->json([
             'status'=>'200',
             'data'=>$data,
+            'category'=>$categoryData,
+            'categoryRecords'=>$categoryRecords,
             'message'=>'Found data' 
         ]);
     }
@@ -111,9 +120,21 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, $id)
     {
-        //
+        Post::find($id)->update([
+            'body' => $request->contents,
+            'image' => $request->photo,
+        ]);
+    //    $categoryName=Category::where('id',$request->categoryID)->get('name');
+       Topic::where('id',$request->topicID)->update([
+            'name' => $request->heading,
+            'categoryID' => $request->categoryID
+        ]);
+        return  response()->json([
+            'status'=>'204',
+            'message'=>'Record successfully updated.'
+        ]);
     }
 
     /**

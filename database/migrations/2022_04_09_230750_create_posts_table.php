@@ -19,6 +19,8 @@ class CreatePostsTable extends Migration
             $table->foreignID('topicID')->constrained('topics','id');
             $table->string('body');
             $table->string('image');
+            $table->integer('totalLikes')->default(0);
+            $table->integer('totalComments')->default(0);
             $table->string('status');
             $table->timestamps();
         });

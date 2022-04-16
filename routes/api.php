@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('/post',[App\Http\Controllers\PostController::class,'create']);
+//Announcement Routes
+Route::post('/announcement/store',[App\Http\Controllers\AnnouncementController::class,'store']);
 //Category Routes
 Route::post('/category/store',[App\Http\Controllers\CategoryController::class,'store']);
 Route::get('/category/index',[App\Http\Controllers\CategoryController::class,'index']);
@@ -28,8 +30,13 @@ Route::post('/category/delete/{id}',[App\Http\Controllers\CategoryController::cl
 //Post Routes
 Route::post('/post/store',[App\Http\Controllers\PostController::class,'store']);
 Route::post('/post/show/{id}',[App\Http\Controllers\PostController::class,'show']);
+Route::post('post/update/{id}',[App\Http\Controllers\PostController::class,'update']);
 Route::post('/post/delete/{id}',[App\Http\Controllers\PostController::class,'destroy']);
 Route::get('/post/index',[App\Http\Controllers\PostController::class,'index']);
+//Like Routes
+Route::post('/like/store',[App\Http\Controllers\LikeController::class,'store']);
+//Comment Routes
+Route::post('/comment/store',[App\Http\Controllers\CommentController::class,'store']);
 //Register
 Route::post('/register',[App\Http\Controllers\MemberController::class,'store']);
 //Login

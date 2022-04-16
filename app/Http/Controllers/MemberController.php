@@ -81,7 +81,7 @@ class MemberController extends Controller
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Member $member)
+    public function update(Request $request, $id)
     {
         $data=Member::find($id)->update([
             // '' => $request->,

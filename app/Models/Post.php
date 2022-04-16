@@ -14,6 +14,8 @@ class Post extends Model
         'topicID',
         'body',
         'image',
+        'totalLikes',
+        'totalComments',
         'status',
     ];
 
@@ -25,5 +27,11 @@ class Post extends Model
     }
     public function Complaints(){
         return $this->hasMany(Complaint::class,'postID');
+    }
+    public function Comments(){
+        return $this->hasMany(Comment::class,'postID');
+    }
+    public function Likes(){
+        return $this->hasMany(Like::class,'postID');
     }
 }

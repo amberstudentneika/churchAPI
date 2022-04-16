@@ -20,6 +20,9 @@ class Member extends Model
     public function Posts(){
         return $this->hasMany(Post::class,'memberID');
     }
+    public function Likes(){
+        return $this->hasMany(like::class,'memberID');
+    }
     public function Comments(){
         return $this->hasMany(Comment::class,'memberID');
     }

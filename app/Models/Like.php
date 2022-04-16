@@ -5,19 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Announcement extends Model
+class Like extends Model
 {
     use HasFactory;
 
     protected $fillable=[
         'memberID',
-        'topic',
-        'message',
-        'status',
-        // 'admin'
+        'postID',
+        'like',
+        'status'
     ];
 
     public function Member(){
         return $this->belongsTo(Member::class,'memberID');
+       }
+    public function Post(){
+        return $this->belongsTo(Post::class,'postID');
        }
 }
