@@ -19,6 +19,9 @@ class CreateMembersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('role')->default(0);
+            $table->string('gender');
+            $table->string('image');
+            $table->integer('totalPosts')->default(0);
             $table->string('status')->default('active');
             $table->timestamps();
         });

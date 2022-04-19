@@ -39,10 +39,11 @@ class MemberController extends Controller
         $name=ucwords($request->firstname)." ".ucwords($request->lastname);
         Member::create([
             'name' => $name,
-            // 'gender' => $request->male,
+            'gender' => $request->gender,
             'email' => $request->email,
             'password' => $request->password,
             'role' => 0,
+            'image' => "tempProfileImage.png",
             'status' => "active",
         ]);
 
@@ -116,7 +117,7 @@ class MemberController extends Controller
        $HashedPasswordCount=Member::where('email',$request->email)->count();
         $email= $request->email;
        $pass= $request->password;
-       if($HashedPasswordCount== 0){
+       if($HashedPasswordCount == 0){
         return  response()->json([
             'status'=> '404',
             'message'=> 'Invalid login. Please try again.'
@@ -129,19 +130,47 @@ class MemberController extends Controller
            $HashedPassword=$HashedPassword[0]['password'];
            $mID=Member::where('email',$email)->get('id');
            $mID=$mID[0]['id']; 
+           $mName=Member::where('email',$email)->get('name');
+           $mName=$mName[0]['name']; 
+           $mImage=Member::where('email',$email)->get('image');
+           $mImage=$mImage[0]['image']; 
            if(Hash::check($pass, $HashedPassword))
            {
                return response()->json([
                 'status'=>'200',
                 'role'=>$role,
                 'memberID'=>$mID,
+                'memberName'=>$mName,
+                'memberImage'=>$mImage,
                 'message'=> 'Login Successful.'
 
                ]);
-           }
+           }else{
+             return  response()->json([
+            'status'=> '404',
+            'message'=> 'Invalid login. Please try again.'
+             ]);
+       }
            
        }
        
+    }
+
+      /**
+     * Find the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Member  $member
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfileImage(Request $request){
+        $data=Member::find($request->memberID)->update([
+            'image' => $request->photo,
+        ]);
+        return  response()->json([
+            'status'=>'204',
+            'message'=>'Record successfully updated.'
+        ]);
     }
 }
 

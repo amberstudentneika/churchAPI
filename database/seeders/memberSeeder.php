@@ -20,6 +20,8 @@ class memberSeeder extends Seeder
             'email' => "shaneika@gmail.com",
             'password' => Hash::make("password"),
             'role' => '0',
+            'gender' => 'female',
+            'image' => 'tempProfileImage.png',
             'status' => "active",
         ]);
     }

@@ -75,9 +75,14 @@ class AnnouncementController extends Controller
      * @param  \App\Models\Announcement  $announcement
      * @return \Illuminate\Http\Response
      */
-    public function show(Announcement $announcement)
+    public function show($id)
     {
-        //
+        $data=Announcement::find($id);
+        return  response()->json([
+            'status'=>'200',
+            'data'=>$data,
+            'message'=>'Found data'
+        ]);
     }
 
     /**
@@ -98,9 +103,17 @@ class AnnouncementController extends Controller
      * @param  \App\Models\Announcement  $announcement
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Announcement $announcement)
+    public function update(Request $request, $id)
     {
-        //
+        $data=Announcement::find($id)->update([
+            'topic' => $request->heading,
+            'message' => $request->contents,
+            'image' => $request->photo
+        ]);
+        return  response()->json([
+            'status'=>'204',
+            'message'=>'Record successfully updated.'
+        ]);
     }
 
     /**
@@ -109,8 +122,14 @@ class AnnouncementController extends Controller
      * @param  \App\Models\Announcement  $announcement
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Announcement $announcement)
+    public function destroy($id)
     {
-        //
+        $data=Announcement::find($id)->update([
+            'status'=> 'inactive'
+        ]);
+        return  response()->json([
+            'status'=>'204',
+            'message'=>'Category successfully deleted.'
+        ]);
     }
 }

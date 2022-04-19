@@ -9,11 +9,18 @@ class Member extends Model
 {
     use HasFactory;
 
+    protected $hidden = ['email','password'];
+
+    protected $key = ['id'];
+
     protected $fillable=[
         'name',
         'email',
         'password',
         'role',
+        'gender',
+        'image',
+        'totalPosts',
         'status',
     ];
 
