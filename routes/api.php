@@ -41,6 +41,9 @@ Route::post('/post/delete/{id}',[App\Http\Controllers\PostController::class,'des
 Route::post('/like/store',[App\Http\Controllers\LikeController::class,'store']);
 //Comment Routes
 Route::post('/comment/store',[App\Http\Controllers\CommentController::class,'store']);
+Route::post('/comment/delete/{id}',[App\Http\Controllers\CommentController::class,'destroy']);
+Route::post('/comment/show/{id}',[App\Http\Controllers\CommentController::class,'show']);
+Route::post('/comment/update/{id}',[App\Http\Controllers\CommentController::class,'update']);
 //Register
 Route::post('/register',[App\Http\Controllers\MemberController::class,'store']);
 Route::post('/upload/profileimage/store',[App\Http\Controllers\MemberController::class,'updateProfileImage']);

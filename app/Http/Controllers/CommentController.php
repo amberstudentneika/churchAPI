@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\Member;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -42,8 +43,8 @@ class CommentController extends Controller
             'body' => $request->comment,
             'status' => "active",
         ]);
-        $total=Comment::where('postID',$request->postID)->count();
-                //likes count update
+        $total=Comment::where('postID',$request->postID)->where('status','active')->count();
+                //comment count update
             Post::where('id',$request->postID)->update([
                 'totalComments' => $total 
             ]);
@@ -59,9 +60,14 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show($id)
     {
-        //
+        $data=Comment::find($id);
+        return  response()->json([
+            'status'=>'200',
+            'data'=>$data,
+            'message'=>'Found data'
+        ]);
     }
 
     /**
@@ -70,7 +76,7 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Comment $comment)
+    public function edit($comment)
     {
         //
     }
@@ -82,9 +88,15 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, $id)
     {
-        //
+        Comment::where('id',$id)->where('memberID',$request->memberID)->update([
+            'body'=> $request->comment
+        ]);
+        return response()->json([
+            'status'=>'204',
+            'message'=>'comment successfully updated.'
+        ]);
     }
 
     /**
@@ -93,8 +105,22 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy(Request $request, $id)
     {
-        //
+        // return $request;
+       Comment::where('memberID',$request->memberID)->where('id',$id)->update([
+           'status'=> "inactive"
+       ]);
+
+       $c = Post::where('id',$request->postID)->get('totalComments');
+       $count =  $c[0]['totalComments'];
+       $total = $count - 1;
+        Post::where('id',$request->postID)->update([
+            'totalComments' => $total 
+        ]);
+        return  response()->json([
+            'status'=>'204',
+            'message'=>'Comment successfully deleted.'
+        ]);
     }
 }
