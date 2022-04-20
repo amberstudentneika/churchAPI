@@ -25,7 +25,7 @@ class PostController extends Controller
         $comment= Comment::where('status','active')->with('Member')->get();
         $category=Category::where('status','active')->get();
         $member=Member::where('status','active')->get(['name','totalPosts','image']);
-        $announcement=Announcement::where('status','active')->with('Member')->get();
+        $announcement=Announcement::with('Member')->where('status','active')->latest()->first();
         if($postCount>0){
             return response()->json([
                 'status'=> 200,
