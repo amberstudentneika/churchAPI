@@ -59,9 +59,14 @@ class MemberController extends Controller
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Http\Response
      */
-    public function show(Member $member)
+    public function show($id)
     {
-        //
+        $data=Member::where('id',$id)->get(['id','email','name','gender','image']);
+        return  response()->json([
+            'status'=>'200',
+            'data'=>$data,
+            'message'=>'Found data' 
+        ]);
     }
 
     /**
@@ -82,11 +87,25 @@ class MemberController extends Controller
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$id)
     {
-        $data=Member::find($id)->update([
-            // '' => $request->,
-        ]);
+        $name=ucwords($request->firstname)." ".ucwords($request->lastname);
+        if($request->password=="isinactive"){
+            Member::find($id)->update([
+                'name' => $name,
+                'gender' => $request->gender,
+                'image' => $request->photo,
+            ]);
+        }
+        elseif($request->password!="isinactive"){
+            Member::find($id)->update([
+                'name' => $name,
+                'gender' => $request->gender,
+                'password' => $request->password,
+                'image' => $request->photo,
+             ]);
+        } 
+        
         return  response()->json([
             'status'=>'204',
             'message'=>'Record successfully updated.'

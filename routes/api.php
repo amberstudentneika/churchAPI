@@ -44,8 +44,11 @@ Route::post('/comment/store',[App\Http\Controllers\CommentController::class,'sto
 Route::post('/comment/delete/{id}',[App\Http\Controllers\CommentController::class,'destroy']);
 Route::post('/comment/show/{id}',[App\Http\Controllers\CommentController::class,'show']);
 Route::post('/comment/update/{id}',[App\Http\Controllers\CommentController::class,'update']);
-//Register
+//Member Routes
 Route::post('/register',[App\Http\Controllers\MemberController::class,'store']);
+Route::post('/profile/show/{id}',[App\Http\Controllers\MemberController::class,'show']);
+Route::post('/profile/update/{id}',[App\Http\Controllers\MemberController::class,'update']);
+
 Route::post('/upload/profileimage/store',[App\Http\Controllers\MemberController::class,'updateProfileImage']);
 //Login
 Route::post('/login',[App\Http\Controllers\MemberController::class,'login']);

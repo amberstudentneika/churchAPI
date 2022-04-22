@@ -43,6 +43,11 @@ class PostController extends Controller
                 'message'=>"No data found."
             ]);
         }
+        return response()->json([
+            'status'=> 404,
+            'message'=>"No data found."
+        ]);
+    
     }
 
     /**
