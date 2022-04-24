@@ -18,13 +18,15 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('/post',[App\Http\Controllers\PostController::class,'create']);
+
+Route::group(['middleware'=>'auth:sanctum'],function(){
 //Announcement Routes
 Route::post('/announcement/store',[App\Http\Controllers\AnnouncementController::class,'store']);
 Route::get('/announcement/index',[App\Http\Controllers\AnnouncementController::class,'index']);
 Route::post('/announcement/show/{id}',[App\Http\Controllers\AnnouncementController::class,'show']);
 Route::post('/announcement/update/{id}',[App\Http\Controllers\AnnouncementController::class,'update']);
 Route::post('/announcement/delete/{id}',[App\Http\Controllers\AnnouncementController::class,'destroy']);
+Route::get('/announcement/recent',[App\Http\Controllers\AnnouncementController::class,'recentAnnouncement']);
 //Category Routes
 Route::post('/category/store',[App\Http\Controllers\CategoryController::class,'store']);
 Route::get('/category/index',[App\Http\Controllers\CategoryController::class,'index']);
@@ -45,10 +47,16 @@ Route::post('/comment/delete/{id}',[App\Http\Controllers\CommentController::clas
 Route::post('/comment/show/{id}',[App\Http\Controllers\CommentController::class,'show']);
 Route::post('/comment/update/{id}',[App\Http\Controllers\CommentController::class,'update']);
 //Member Routes
-Route::post('/register',[App\Http\Controllers\MemberController::class,'store']);
+Route::get('/member/index',[App\Http\Controllers\MemberController::class,'index']);
 Route::post('/profile/show/{id}',[App\Http\Controllers\MemberController::class,'show']);
 Route::post('/profile/update/{id}',[App\Http\Controllers\MemberController::class,'update']);
-
-Route::post('/upload/profileimage/store',[App\Http\Controllers\MemberController::class,'updateProfileImage']);
+//SuperAdmin Routes
+Route::post('/member/role/update/admin/{id}',[App\Http\Controllers\MemberController::class,'updateRole']);
+Route::post('/admin/role/update/member/{id}',[App\Http\Controllers\MemberController::class,'updateRoleRevokeAdmin']);
+Route::post('/deactivate/user/{id}',[App\Http\Controllers\MemberController::class,'destroy']);
+Route::post('/reactivate/user/{id}',[App\Http\Controllers\MemberController::class,'reactivate']);
+});
+//Route::post('/upload/profileimage/store',[App\Http\Controllers\MemberController::class,'updateProfileImage']);
 //Login
-Route::post('/login',[App\Http\Controllers\MemberController::class,'login']);
+Route::post('/login',[App\Http\Controllers\MemberController::class,'login'])->name('login');
+Route::post('/register',[App\Http\Controllers\MemberController::class,'store']);

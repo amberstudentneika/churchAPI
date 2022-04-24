@@ -108,7 +108,7 @@ class CommentController extends Controller
     public function destroy(Request $request, $id)
     {
         // return $request;
-       Comment::where('memberID',$request->memberID)->where('id',$id)->update([
+       Comment::where('id',$id)->update([
            'status'=> "inactive"
        ]);
 

@@ -12,6 +12,30 @@ class AnnouncementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function recentAnnouncement()
+    {
+        $dataCount=Announcement::where('status','active')->count();
+        $announcement=Announcement::with('Member')->where('status','active')->latest()->first();
+
+        if($dataCount>0){
+        return response()->json([
+            'status'=>'200',
+            'announcementData'=> $announcement,
+            'message'=>'Data found'
+        ]);
+        }elseif($dataCount<1){
+        return response()->json([
+            'status'=>'404',
+            'message'=>'No data found'
+        ]);
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $dataCount=Announcement::where('status','active')->count();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Hash;
 
@@ -15,7 +16,23 @@ class MemberController extends Controller
      */
     public function index()
     {
-        //
+        $dataCount=Member::where('status','active')->count();
+        $data=Member::where('status','active')->where('role','!=',3)->orderBy('name','asc')->get();
+        $inactiveUser=Member::where('status','inactive')->where('role','!=',3)->orderBy('name','asc')->get();
+//
+        if($dataCount>0){
+        return response()->json([
+            'status'=>'200',
+            'data'=> $data,
+            'inactiveUser'=> $inactiveUser,
+            'message'=>'Data found'
+        ]);
+        }elseif($dataCount<1){
+        return response()->json([
+            'status'=>'404',
+            'message'=>'No member data found'
+        ]);
+        }
     }
 
     /**
@@ -111,6 +128,37 @@ class MemberController extends Controller
             'message'=>'Record successfully updated.'
         ]);
     }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Member  $member
+     * @return \Illuminate\Http\Response
+     */
+    public function updateRole(Request $request,$id)
+    {
+        
+            Member::find($id)->update([
+                'role' => 1,
+            ]);
+
+            return  response()->json([
+            'status'=>'204',
+            'message'=>'Member has been successfully converted to an administrator.'
+        ]);
+    }
+    public function updateRoleRevokeAdmin(Request $request,$id)
+    {
+        
+            Member::find($id)->update([
+                'role' => 0,
+            ]);
+
+            return  response()->json([
+            'status'=>'204',
+            'message'=>'Administrative role has been successfully revoked.'
+        ]);
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -118,9 +166,35 @@ class MemberController extends Controller
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Member $member)
+    public function destroy($id)
     {
-        //
+        Member::find($id)->update([
+            'status' => "inactive",
+        ]);
+
+        return  response()->json([
+        'status'=>'204',
+        'message'=>'User account was successfully deactivated.'
+    ]);
+    }
+
+    /**
+     * Reactivate the specified resource from storage.
+     *
+     * @param  \App\Models\Member  $member
+     * @return \Illuminate\Http\Response
+     */
+    public function reactivate($id)
+    {
+        Member::find($id)->update([
+            'status' => "active",
+            'role' => 0
+        ]);
+
+        return  response()->json([
+        'status'=>'204',
+        'message'=>'User account was successfully re-activated.'
+    ]);
     }
 
 
@@ -134,7 +208,7 @@ class MemberController extends Controller
     public function login(Request $request)
     {
        $HashedPasswordCount=Member::where('email',$request->email)->count();
-        $email= $request->email;
+       $email= $request->email;
        $pass= $request->password;
        if($HashedPasswordCount == 0){
         return  response()->json([
@@ -155,8 +229,11 @@ class MemberController extends Controller
            $mImage=$mImage[0]['image']; 
            if(Hash::check($pass, $HashedPassword))
            {
+               $member = Member::find($mID);
+               $token = $member->createToken('LewisMinistry')->plainTextToken;
                return response()->json([
                 'status'=>'200',
+                'token'=>$token,
                 'role'=>$role,
                 'memberID'=>$mID,
                 'memberName'=>$mName,
@@ -182,14 +259,14 @@ class MemberController extends Controller
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Http\Response
      */
-    public function updateProfileImage(Request $request){
-        $data=Member::find($request->memberID)->update([
-            'image' => $request->photo,
-        ]);
-        return  response()->json([
-            'status'=>'204',
-            'message'=>'Record successfully updated.'
-        ]);
-    }
+    // public function updateProfileImage(Request $request){
+    //     $data=Member::find($request->memberID)->update([
+    //         'image' => $request->photo,
+    //     ]);
+    //     return  response()->json([
+    //         'status'=>'204',
+    //         'message'=>'Record successfully updated.'
+    //     ]);
+    // }
 }
 

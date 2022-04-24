@@ -5,8 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Member;
-
-class memberSeeder extends Seeder
+class superAdminSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,14 +15,13 @@ class memberSeeder extends Seeder
     public function run()
     {
         Member::create([
-            'name' => "Nihara Win",
-            'email' => "member@gmail.com",
+            'name' => "Jon Shan",
+            'email' => "superadmin@gmail.com",
             'password' => Hash::make("password"),
-            'role' => '0',
-            'gender' => 'female',
+            'role' => '3',
+            'gender' => 'male',
             'image' => 'tempProfileImage.png',
             'status' => "active",
         ]);
-       
     }
 }

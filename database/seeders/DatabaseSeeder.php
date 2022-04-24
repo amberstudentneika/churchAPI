@@ -1,9 +1,7 @@
 <?php
 
 namespace Database\Seeders;
-
-use App\Models\Category;
-use App\Models\Member;
+ 
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,7 +15,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
         categorySeeder::class, 
-        memberSeeder::class
+        superAdminSeeder::class,
+        memberSeeder::class,
+        adminSeeder::class,
+        announcementSeeder::class
         ]);
     }
 }
