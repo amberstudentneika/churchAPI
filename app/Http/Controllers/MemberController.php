@@ -207,13 +207,20 @@ class MemberController extends Controller
      */
     public function login(Request $request)
     {
-       $HashedPasswordCount=Member::where('email',$request->email)->count();
+      $HashedPasswordCount=Member::where('email',$request->email)->where('status','!=','inactive')->count();
+      $inactiveUserCount=Member::where('email',$request->email)->where('status','=','inactive')->count();
        $email= $request->email;
        $pass= $request->password;
-       if($HashedPasswordCount == 0){
+       if($HashedPasswordCount == 0 && $inactiveUserCount == 0){
         return  response()->json([
             'status'=> '404',
             'message'=> 'Invalid login. Please try again.'
+             ]);
+       }
+       if($inactiveUserCount==1){
+        return  response()->json([
+            'status'=> '404',
+            'message'=> 'Your account has been de-activated. Please contact your administrator to be re-activated.'
              ]);
        }
        if($HashedPasswordCount!=0){
