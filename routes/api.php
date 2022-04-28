@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-
 Route::group(['middleware'=>'auth:sanctum'],function(){
 //Announcement Routes
 Route::post('/announcement/store',[App\Http\Controllers\AnnouncementController::class,'store']);
@@ -56,7 +51,6 @@ Route::post('/admin/role/update/member/{id}',[App\Http\Controllers\MemberControl
 Route::post('/deactivate/user/{id}',[App\Http\Controllers\MemberController::class,'destroy']);
 Route::post('/reactivate/user/{id}',[App\Http\Controllers\MemberController::class,'reactivate']);
 });
-//Route::post('/upload/profileimage/store',[App\Http\Controllers\MemberController::class,'updateProfileImage']);
 //Login
 Route::post('/login',[App\Http\Controllers\MemberController::class,'login'])->name('login');
 Route::post('/register',[App\Http\Controllers\MemberController::class,'store']);
