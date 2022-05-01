@@ -117,7 +117,7 @@ class MemberController extends Controller
                 'lastname' => $lname,
                 'gender' => $request->gender,
                 'image' => $request->photo,
-            ]);
+            ]); 
         }
         elseif($request->password!="isinactive"){
             Member::find($id)->update([
