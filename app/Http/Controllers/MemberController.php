@@ -17,8 +17,8 @@ class MemberController extends Controller
     public function index()
     {
         $dataCount=Member::where('status','active')->count();
-        $data=Member::where('status','active')->where('role','!=',3)->orderBy('name','asc')->get();
-        $inactiveUser=Member::where('status','inactive')->where('role','!=',3)->orderBy('name','asc')->get();
+        $data=Member::where('status','active')->where('role','!=',3)->orderBy('lastname','asc')->get();
+        $inactiveUser=Member::where('status','inactive')->where('role','!=',3)->orderBy('lastname','asc')->get();
 //
         if($dataCount>0){
         return response()->json([
@@ -53,9 +53,11 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
-        $name=ucwords($request->firstname)." ".ucwords($request->lastname);
+        $fname=ucwords($request->firstname);
+        $lname=ucwords($request->lastname);
         Member::create([
-            'name' => $name,
+            'firstname' => $fname,
+            'lastname' => $lname,
             'gender' => $request->gender,
             'email' => $request->email,
             'password' => $request->password,
@@ -78,7 +80,7 @@ class MemberController extends Controller
      */
     public function show($id)
     {
-        $data=Member::where('id',$id)->get(['id','email','name','gender','image']);
+        $data=Member::where('id',$id)->get(['id','email','firstname','lastname','gender','image']);
         return  response()->json([
             'status'=>'200',
             'data'=>$data,
@@ -106,17 +108,21 @@ class MemberController extends Controller
      */
     public function update(Request $request,$id)
     {
-        $name=ucwords($request->firstname)." ".ucwords($request->lastname);
+        $fname=ucwords($request->firstname);
+        $lname=ucwords($request->lastname);
+      $role= Member::where('id','=',$id)->get('role');
         if($request->password=="isinactive"){
             Member::find($id)->update([
-                'name' => $name,
+                'firstname' => $fname,
+                'lastname' => $lname,
                 'gender' => $request->gender,
                 'image' => $request->photo,
             ]);
         }
         elseif($request->password!="isinactive"){
             Member::find($id)->update([
-                'name' => $name,
+                'firstname' => $fname,
+                'lastname' => $lname,
                 'gender' => $request->gender,
                 'password' => $request->password,
                 'image' => $request->photo,
@@ -125,11 +131,12 @@ class MemberController extends Controller
         
         return  response()->json([
             'status'=>'204',
+            'data' => $role,
             'message'=>'Record successfully updated.'
         ]);
     }
     /**
-     * Update the specified resource in storage.
+     * Update the role of a member.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Member  $member
@@ -230,8 +237,11 @@ class MemberController extends Controller
            $HashedPassword=$HashedPassword[0]['password'];
            $mID=Member::where('email',$email)->get('id');
            $mID=$mID[0]['id']; 
-           $mName=Member::where('email',$email)->get('name');
-           $mName=$mName[0]['name']; 
+           $mName=Member::where('email',$email)->get(['firstname','lastname']);
+           $mFName = $mName[0]['firstname'];
+           $mLName = $mName[0]['lastname']; 
+           $mName = $mFName." ".$mLName;
+           $mName;
            $mImage=Member::where('email',$email)->get('image');
            $mImage=$mImage[0]['image']; 
            if(Hash::check($pass, $HashedPassword))

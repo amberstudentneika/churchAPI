@@ -24,7 +24,7 @@ class PostController extends Controller
         $post=Post::where('status','active')->with('Topic','Member')->orderBy('created_at','desc')->get(['id','memberID','topicID','body','image','totalLikes','totalComments','created_at','updated_at']);
         $comment= Comment::where('status','active')->with('Member')->orderBy('created_at','desc')->get();
         $category=Category::where('status','active')->get();
-        $member=Member::where('status','active')->get(['name','totalPosts','image']);
+        $member=Member::where('status','active')->get(['firstname','lastname','totalPosts','image']);
         if($postCount>0){
             return response()->json([
                 'status'=> 200,

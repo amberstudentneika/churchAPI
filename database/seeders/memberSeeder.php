@@ -16,7 +16,8 @@ class memberSeeder extends Seeder
     public function run()
     {
         Member::create([
-            'name' => "Nihara Win",
+            'firstname' => "Nihara",
+            'lastname' => "Win",
             'email' => "member@gmail.com",
             'password' => Hash::make("password"),
             'role' => '0',

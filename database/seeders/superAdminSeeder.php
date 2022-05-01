@@ -15,7 +15,8 @@ class superAdminSeeder extends Seeder
     public function run()
     {
         Member::create([
-            'name' => "Jon Shan",
+            'firstname' => "Jon",
+            'lastname' => "Shan",
             'email' => "superadmin@gmail.com",
             'password' => Hash::make("password"),
             'role' => '3',

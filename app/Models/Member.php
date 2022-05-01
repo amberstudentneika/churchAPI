@@ -17,7 +17,8 @@ class Member extends Model
     protected $key = ['id'];
 
     protected $fillable=[
-        'name',
+        'firstname',
+        'lastname',
         'email',
         'password',
         'role',
